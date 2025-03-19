@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily 📆 Woggle 🎲 Scramble 🏃</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="splashModal" class="modal splash-modal">
+        <div class="modal-content splash-content">
+            <h1>Daily 📆 Woggle 🎲 Scramble 🏃</h1>
+            <div class="instructions">
+                <div class="instruction-step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">Find words by connecting adjacent letters (including diagonals)</div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">Words must be at least 3 letters long</div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">Each letter can only be used once per word</div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">4</div>
+                    <div class="step-text">After finding (real!) words, unscramble them to keep your points!</div>
+                </div>
+            </div>
+            <button id="startGame" class="splash-start-button">Start Game</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="game-header">
+            <div class="timer">Time: <span id="time">2:00</span></div>
+            <button id="startGame" style="display: none;">Start Game</button>
+        </div>
+        
+        <div class="grid-container">
+            <div id="grid" class="grid"></div>
+            <div id="messageArea" class="message-area"></div>
+        </div>
+
+        <div class="input-section">
+            <input type="text" id="wordInput" placeholder="Type or tap letters" readonly>
+            <button id="clearSelection">Clear</button>
+            <button id="submitWord">Submit</button>
+        </div>
+
+        <div class="words-container">
+            <h3>Found Words</h3>
+            <div id="wordsList"></div>
+        </div>
+        
+        <div id="gameOverModal" class="modal">
+            <div class="modal-content">
+                <h2>Game Over!</h2>
+                <div id="finalScore"></div>
+                <div id="topWords"></div>
+                <div class="modal-buttons">
+                    <button id="shareResults">Share Results</button>
+                    <button style ="display: none;" id="playAgain">Play Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
