@@ -3,39 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily 📆 Woggle 🎲 Scramble 🏃</title>
+    <title>GridWordRush</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="splashModal" class="modal splash-modal">
-        <div class="modal-content splash-content">
-            <h1>Daily 📆 Woggle 🎲 Scramble 🏃</h1>
-            <div class="instructions">
-                <div class="instruction-step">
-                    <div class="step-number">1</div>
-                    <div class="step-text">Find words by connecting adjacent letters (including diagonals)</div>
-                </div>
-                <div class="instruction-step">
-                    <div class="step-number">2</div>
-                    <div class="step-text">Words must be at least 3 letters long</div>
-                </div>
-                <div class="instruction-step">
-                    <div class="step-number">3</div>
-                    <div class="step-text">Each letter can only be used once per word</div>
-                </div>
-                <div class="instruction-step">
-                    <div class="step-number">4</div>
-                    <div class="step-text">After finding (real!) words, unscramble them to keep your points!</div>
-                </div>
-            </div>
-            <button id="startGame" class="splash-start-button">Start Game</button>
-        </div>
-    </div>
-
     <div class="container">
         <div class="game-header">
             <div class="timer">Time: <span id="time">2:00</span></div>
-            <button id="startGame" style="display: none;">Start Game</button>
+            <button id="startGame">Start Game</button>
         </div>
         
         <div class="grid-container">
@@ -54,14 +29,57 @@
             <div id="wordsList"></div>
         </div>
         
+        <div id="splashModal" class="modal">
+            <div class="modal-content splash-content">
+                <h1>GridWord-Rush</h1>
+                <div id="splashContent">
+                    <!-- Content will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+
         <div id="gameOverModal" class="modal">
             <div class="modal-content">
-                <h2>Game Over!</h2>
+                <h2>Well played!</h2>
                 <div id="finalScore"></div>
                 <div id="topWords"></div>
                 <div class="modal-buttons">
                     <button id="shareResults">Share Results</button>
-                    <button style ="display: none;" id="playAgain">Play Again</button>
+                    <button id="playAgain">Play Again</button>
+                    <button id="showBonusAnswers">Show Bonus Round Answers</button>
+                </div>
+                <div id="bonusAnswers" class="bonus-answers" style="display: none;">
+                    <h3>Bonus Round Answers</h3>
+                    <div id="bonusAnswersList"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bonusRoundIntroModal" class="modal">
+            <div class="modal-content">
+                <h2>Bonus Round!</h2>
+                <div class="bonus-intro">
+                    <p>Great job finding words in the grid! Now it's time for the bonus round...</p>
+                    <p>You'll see 5 sentences, each containing one of the words you found.</p>
+                    <p>Your task is to identify which sentence contains your word...</p>
+                    <p>But you'll only have 10 seconds for each answer though -so be fast</p>
+                    <p>- remember that each correct answer earns you 10 bonus points!</p>
+                    <p>Good luck!</p>
+                </div>
+                <div class="modal-buttons">
+                    <button id="startBonusRound">Start Bonus Round</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="bonusRoundModal" class="modal">
+            <div class="modal-content">
+                <h2>Bonus Round!</h2>
+                <div id="bonusTimer">Time Left: <span id="bonusTime">10</span>s</div>
+                <div id="sentencePuzzle" style="display: none;"></div>
+                <div class="sentence-options"></div>
+                <div class="modal-buttons">
+                    <button id="skipPuzzle">Skip</button>
                 </div>
             </div>
         </div>
