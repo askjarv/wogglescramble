@@ -37,7 +37,7 @@ class BoggleGame {
             const time = parseInt(timeParam);
             return isNaN(time) ? 60 : Math.max(1, time); // Ensure at least 1 second
         }
-        return 60; // Default time
+        return 180; // Default time
     }
 
     checkDebugMode() {
