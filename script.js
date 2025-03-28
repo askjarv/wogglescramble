@@ -37,7 +37,7 @@ class BoggleGame {
             const time = parseInt(timeParam);
             return isNaN(time) ? 60 : Math.max(1, time); // Ensure at least 1 second
         }
-        return 180; // Default time
+        return 60; // Default time
     }
 
     checkDebugMode() {
@@ -456,7 +456,17 @@ class BoggleGame {
             `The ${selectedWord.toLowerCase()} sat quietly on the windowsill.`,
             `Grandma's recipe called for a special ${selectedWord.toLowerCase()}.`,
             `The children discovered a ${selectedWord.toLowerCase()} in the attic.`,
-            `The explorer's map led to a hidden ${selectedWord.toLowerCase()}.`
+            `The explorer's map led to a hidden ${selectedWord.toLowerCase()}.`,
+            `The museum displayed an ancient ${selectedWord.toLowerCase()}.`,
+            `The garden was home to a rare ${selectedWord.toLowerCase()}.`,
+            `The detective found a crucial ${selectedWord.toLowerCase()} at the scene.`,
+            `The artist painted a beautiful ${selectedWord.toLowerCase()}.`,
+            `The scientist studied the unique ${selectedWord.toLowerCase()}.`,
+            `The chef prepared a delicious ${selectedWord.toLowerCase()}.`,
+            `The photographer captured a stunning ${selectedWord.toLowerCase()}.`,
+            `The treasure hunter sought a valuable ${selectedWord.toLowerCase()}.`,
+            `The gardener tended to a delicate ${selectedWord.toLowerCase()}.`,
+            `The astronomer observed a distant ${selectedWord.toLowerCase()}.`
         ];
 
         // Templates for incorrect sentences (using random words)
@@ -475,7 +485,22 @@ class BoggleGame {
             `The morning fog revealed a strange shape.`,
             `The rainbow's end held a magical surprise.`,
             `The garden was filled with colorful flowers.`,
-            `The library contained ancient manuscripts.`
+            `The library contained ancient manuscripts.`,
+            `The museum displayed a priceless artifact.`,
+            `The detective found a crucial clue at the scene.`,
+            `The artist painted a beautiful landscape.`,
+            `The scientist studied the unique specimen.`,
+            `The chef prepared a delicious feast.`,
+            `The photographer captured a stunning sunset.`,
+            `The treasure hunter sought a valuable relic.`,
+            `The gardener tended to a delicate orchid.`,
+            `The astronomer observed a distant star.`,
+            `The storm created a dramatic atmosphere.`,
+            `The morning dew sparkled in the sunlight.`,
+            `The rainbow painted the sky with colors.`,
+            `The library held countless stories.`,
+            `The museum showcased rare artifacts.`,
+            `The garden bloomed with spring flowers.`
         ];
 
         // Select a random correct template
@@ -699,7 +724,10 @@ class BoggleGame {
             `Words Found 🕵: ${totalWords}\n` +
             `Words Rejected 👿: ${rejectedCount}\n` +
             `Example Rejected Word 🤷: ${exampleRejectedWord}\n` +
-            `Bonus Points Earned 💷: ${this.bonusScore}\n\n` // +
+            `Bonus Points Earned 💷: ${this.bonusScore}\n\n` + 
+            // Link to the game - get the current url of the page
+            `Not played? Play the game yourself here: ${window.location.href}\n\n` 
+            
             // `Top Words:\n${topWords.map(word => `• ${word} (${word.length} letters)`).join('\n')}`;
 
         try {
@@ -817,11 +845,11 @@ class BoggleGame {
         const shareText = `🎯 GridWordRushBonus Round Sentence 🎯\n\n` +
         // If correct, say correct answer, if incorrect, say the answer I gave, would you believe it was
         // and then say the correct answer
-            `${answer.wasCorrect ? 'Correct Answer:' : 'The answer I gave, would you believe it, was:'}\n` +
+            `${answer.wasCorrect ? 'Correct Answer:' : '🤦 The answer I gave, would you believe it, was:'}\n` +
             `${answer.selectedSentence}\n\n` +
-            `${answer.wasCorrect ? '✓ Correct!' : '✗ Incorrect'}\n` +
-            `The word was: ${answer.word}` +
-            `and was in the sentence: ${answer.sentence}`;
+            `${answer.wasCorrect ? '✅ Correct!' : '❌ Incorrect'}\n` +
+            `✍️ The word was: ${answer.word}` +
+            ` and was in the sentence 📝: ${answer.sentence}`;
 
         try {
             if (navigator.share) {
