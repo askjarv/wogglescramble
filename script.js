@@ -4,7 +4,7 @@ class BoggleGame {
         this.size = 5;
         this.selectedCells = [];
         this.words = new Map(); // Map to store words by length
-        this.timeLeft = this.getInitialTime(); // Get time from URL parameter or default to 60
+        this.timeLeft = this.getInitialTime(); // Get time from URL parameter or default to 180 (3 minutes)
         this.timer = null;
         this.isGameActive = false;
         this.dictionary = new Set(); // Set to store valid dictionary words
@@ -37,7 +37,7 @@ class BoggleGame {
             const time = parseInt(timeParam);
             return isNaN(time) ? 60 : Math.max(1, time); // Ensure at least 1 second
         }
-        return 60; // Default time
+        return 180; // Default time (3 minutes)
     }
 
     checkDebugMode() {
@@ -166,9 +166,9 @@ class BoggleGame {
             'AAEEGN', 'ABBJOO', 'ACHOPS', 'AFFKPS',
             'AOOTTW', 'CIMOTU', 'DEILRX', 'DELRVY',
             'DISTTY', 'EEGHNW', 'EEINSU', 'EHRTVW',
-            'EIOSST', 'ELRTTY', 'HIMNQU', 'HLNNRZ',
+            'EIOSST', 'ELRTTY', 'HIMNPU', 'HLNNRZ',
             'AAAFRS', 'AAEEEE', 'AAFIRS', 'ADENNN',
-            'AEEEEM', 'AEEGMU', 'AEGMNN', 'AFIRSY', 'BJKQXZ'
+            'AEEEEM', 'AEEGMU', 'AEGMNN', 'AFIRSY', 'BJAKXZ'
         ];
 
         // Shuffle dice using seeded RNG
