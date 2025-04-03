@@ -4,7 +4,7 @@ class BoggleGame {
         this.size = 5;
         this.selectedCells = [];
         this.words = new Map(); // Map to store words by length
-        this.timeLeft = this.getInitialTime(); // Get time from URL parameter or default to 180 (3 minutes)
+        this.timeLeft = this.getInitialTime(); // Get time from URL parameter or default to 180
         this.timer = null;
         this.isGameActive = false;
         this.dictionary = new Set(); // Set to store valid dictionary words
@@ -22,7 +22,7 @@ class BoggleGame {
         this.addEventListeners();
         this.initializeGameOverModal();
         if (!this.isDebugMode) {
-            this.checkDailyPlay();
+        this.checkDailyPlay();
         }
         // Load dictionary
         this.loadDictionary();
@@ -37,7 +37,7 @@ class BoggleGame {
             const time = parseInt(timeParam);
             return isNaN(time) ? 60 : Math.max(1, time); // Ensure at least 1 second
         }
-        return 180; // Default time (3 minutes)
+        return 180; // Default time
     }
 
     checkDebugMode() {
@@ -74,6 +74,12 @@ class BoggleGame {
 
         // Disable the input box
         this.wordInput.disabled = true;
+
+        // Adjust word input width for mobile
+        this.wordInput.style.width = '80%';
+        this.wordInput.style.maxWidth = '300px';
+        this.wordInput.style.margin = '0 auto';
+        this.wordInput.style.display = 'block';
     }
 
     addEventListeners() {
@@ -138,7 +144,13 @@ class BoggleGame {
         
         this.splashModal.classList.remove('show');
         this.resetGame();
-        this.generateGrid();
+        
+        // Only proceed if grid generation was successful
+        if (!this.generateGrid()) {
+            this.showMessage('Error generating grid. Please try again.');
+            return;
+        }
+        
         this.renderGrid();
         this.startTimer();
         this.isGameActive = true;
@@ -166,26 +178,76 @@ class BoggleGame {
             'AAEEGN', 'ABBJOO', 'ACHOPS', 'AFFKPS',
             'AOOTTW', 'CIMOTU', 'DEILRX', 'DELRVY',
             'DISTTY', 'EEGHNW', 'EEINSU', 'EHRTVW',
-            'EIOSST', 'ELRTTY', 'HIMNPU', 'HLNNRZ',
+            'EIOSST', 'ELRTTY', 'HIMNQU', 'HLNNRZ',
             'AAAFRS', 'AAEEEE', 'AAFIRS', 'ADENNN',
-            'AEEEEM', 'AEEGMU', 'AEGMNN', 'AFIRSY', 'BJAKXZ'
+            'AEIOUU', 'AGMOWU', 'AHMORS', 'BJKQXZ',
+            'CCENST'
         ];
 
-        // Shuffle dice using seeded RNG
-        for (let i = dice.length - 1; i > 0; i--) {
-            const j = Math.floor(rng.random() * (i + 1));
-            [dice[i], dice[j]] = [dice[j], dice[i]];
+        console.log('Initial dice array:', dice);
+        console.log('Dice array length:', dice.length);
+
+        // Verify all dice have 6 letters
+        for (let i = 0; i < dice.length; i++) {
+            if (dice[i].length !== 6) {
+                console.error(`Die at index ${i} has incorrect length: ${dice[i]}`);
+                return false;
+            }
         }
+
+        // Create a copy of the dice array for shuffling
+        const shuffledDice = [...dice];
+        console.log('After copy dice array:', shuffledDice);
+        console.log('After copy dice array length:', shuffledDice.length);
+
+        // Shuffle using a more reliable method
+        for (let i = 0; i < shuffledDice.length; i++) {
+            // Ensure we only use valid positive indices
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(rng.random() * shuffledDice.length);
+            } while (randomIndex < 0 || randomIndex >= shuffledDice.length);
+            
+            console.log(`Swapping indices ${i} and ${randomIndex}`);
+            console.log(`Before swap: ${shuffledDice[i]} and ${shuffledDice[randomIndex]}`);
+            const temp = shuffledDice[i];
+            shuffledDice[i] = shuffledDice[randomIndex];
+            shuffledDice[randomIndex] = temp;
+            console.log(`After swap: ${shuffledDice[i]} and ${shuffledDice[randomIndex]}`);
+        }
+
+        console.log('After shuffle dice array:', shuffledDice);
+        console.log('After shuffle dice array length:', shuffledDice.length);
+
+        // Initialize grid array
+        this.grid = Array(this.size).fill().map(() => Array(this.size).fill(''));
 
         // Create grid
         for (let i = 0; i < this.size; i++) {
-            this.grid[i] = [];
             for (let j = 0; j < this.size; j++) {
-                const die = dice[i * this.size + j];
+                const dieIndex = i * this.size + j;
+                console.log(`\nAccessing die at index ${dieIndex}:`);
+                console.log(`Grid position: [${i}, ${j}]`);
+                console.log(`Shuffled dice array at ${dieIndex}:`, shuffledDice[dieIndex]);
+                
+                if (dieIndex >= shuffledDice.length) {
+                    console.error('Not enough dice for the grid size');
+                    return false;
+                }
+                const die = shuffledDice[dieIndex];
+                if (!die) {
+                    console.error('Die is undefined at index:', dieIndex);
+                    console.log('Full shuffled dice array:', shuffledDice);
+                    return false;
+                }
+                // Use seeded RNG for die face selection
                 const randomFace = die.charAt(Math.floor(rng.random() * die.length));
                 this.grid[i][j] = randomFace;
+                console.log(`Selected face: ${randomFace}`);
             }
         }
+
+        return true;
     }
 
     getTodaysSeed() {
@@ -268,7 +330,7 @@ class BoggleGame {
         }
 
         // Check if word was already found
-        const length = word.length;
+            const length = word.length;
         if (this.words.has(length) && this.words.get(length).has(word)) {
             this.showMessage('You already found this word!', true);
             this.clearSelection();
@@ -284,11 +346,11 @@ class BoggleGame {
         }
 
         // Word is valid, add it to found words
-        if (!this.words.has(length)) {
-            this.words.set(length, new Set());
-        }
-        this.words.get(length).add(word);
-        this.updateWordsList();
+            if (!this.words.has(length)) {
+                this.words.set(length, new Set());
+            }
+            this.words.get(length).add(word);
+            this.updateWordsList();
 
         // Show special messages for longer words
         if (wordLength >= 7) {
@@ -457,16 +519,16 @@ class BoggleGame {
             `Grandma's recipe called for a special ${selectedWord.toLowerCase()}.`,
             `The children discovered a ${selectedWord.toLowerCase()} in the attic.`,
             `The explorer's map led to a hidden ${selectedWord.toLowerCase()}.`,
-            `The museum displayed an ancient ${selectedWord.toLowerCase()}.`,
-            `The garden was home to a rare ${selectedWord.toLowerCase()}.`,
-            `The detective found a crucial ${selectedWord.toLowerCase()} at the scene.`,
+            `The ${selectedWord.toLowerCase()} danced in the moonlight.`,
             `The artist painted a beautiful ${selectedWord.toLowerCase()}.`,
-            `The scientist studied the unique ${selectedWord.toLowerCase()}.`,
+            `The detective found a crucial ${selectedWord.toLowerCase()}.`,
+            `The gardener tended to the ${selectedWord.toLowerCase()} carefully.`,
             `The chef prepared a delicious ${selectedWord.toLowerCase()}.`,
-            `The photographer captured a stunning ${selectedWord.toLowerCase()}.`,
-            `The treasure hunter sought a valuable ${selectedWord.toLowerCase()}.`,
-            `The gardener tended to a delicate ${selectedWord.toLowerCase()}.`,
-            `The astronomer observed a distant ${selectedWord.toLowerCase()}.`
+            `The photographer captured the ${selectedWord.toLowerCase()} perfectly.`,
+            `The scientist studied the ${selectedWord.toLowerCase()} intently.`,
+            `The musician played a haunting ${selectedWord.toLowerCase()}.`,
+            `The writer described the ${selectedWord.toLowerCase()} vividly.`,
+            `The teacher explained the ${selectedWord.toLowerCase()} clearly.`
         ];
 
         // Templates for incorrect sentences (using random words)
@@ -486,21 +548,16 @@ class BoggleGame {
             `The rainbow's end held a magical surprise.`,
             `The garden was filled with colorful flowers.`,
             `The library contained ancient manuscripts.`,
-            `The museum displayed a priceless artifact.`,
-            `The detective found a crucial clue at the scene.`,
-            `The artist painted a beautiful landscape.`,
-            `The scientist studied the unique specimen.`,
-            `The chef prepared a delicious feast.`,
-            `The photographer captured a stunning sunset.`,
-            `The treasure hunter sought a valuable relic.`,
-            `The gardener tended to a delicate orchid.`,
-            `The astronomer observed a distant star.`,
-            `The storm created a dramatic atmosphere.`,
-            `The morning dew sparkled in the sunlight.`,
-            `The rainbow painted the sky with colors.`,
-            `The library held countless stories.`,
-            `The museum showcased rare artifacts.`,
-            `The garden bloomed with spring flowers.`
+            `The sunset painted the sky in brilliant colors.`,
+            `The waves crashed against the rocky shore.`,
+            `The mountain peak was covered in snow.`,
+            `The city lights twinkled in the distance.`,
+            `The forest echoed with bird songs.`,
+            `The desert stretched endlessly before them.`,
+            `The river flowed gently through the valley.`,
+            `The stars shone brightly in the night sky.`,
+            `The autumn leaves danced in the wind.`,
+            `The spring flowers bloomed in the garden.`
         ];
 
         // Select a random correct template

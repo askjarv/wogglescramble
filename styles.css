@@ -82,19 +82,13 @@ body {
 .input-section {
     display: flex;
     gap: 10px;
-    margin: 20px 0;
-    justify-content: center;
-    align-items: center;
+    margin-bottom: 20px;
 }
 
 #wordInput {
+    flex: 1;
     padding: 10px;
     font-size: 18px;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    width: 200px; /* Reduced from default width */
-    text-align: center;
-    text-transform: uppercase;
 }
 
 button {
@@ -109,21 +103,6 @@ button {
 
 button:hover {
     background: #45a049;
-}
-
-#skipPuzzle {
-    background-color: #ff4444;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-#skipPuzzle:hover {
-    background-color: #cc0000;
 }
 
 .words-container {
@@ -544,4 +523,18 @@ button:hover {
 
 .share-sentence-button:hover {
     background-color: #45a049;
+}
+
+#skipPuzzle {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#skipPuzzle:hover {
+    background-color: #c0392b;
 } 
